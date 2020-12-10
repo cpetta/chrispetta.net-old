@@ -76,28 +76,22 @@
 			<article>
 				<div class="articleContainer">
 					<div id="viewer3d" class="defautViewer3D">
-						<div id="backgroundFor3D"
+						<div id="paddingForImagesAnd3D"
 						style="
 						position: relative;
 						width:100%;
-						/*background-image: url(images/thumbnails/19RedBot1.png);*/
-						filter: blur(10px);
-						background-repeat: no-repeat;background-size: cover;
-						z-index:0;
-						
 						height:0px;
 						padding-top: 100%;
 						"
 						></div>
-						<model-viewer src="models/redbox5.gltf" alt="An interactive 3D model of a red robot" auto-rotate camera-controls>
+						<model-viewer id="modelViewer" src="models/redbot.glb" reveal="interaction" alt="An interactive 3D model of a red robot" auto-rotate camera-controls shadow-intensity="1" >
 							<div id="lazy-load-poster" slot="poster"></div>
-							<div id="button-load" class="fadeIn" slot="poster">Load 3D Model</div>
+							<div id="loadBtn" slot="poster">load 3D model</div>
 						</model-viewer>
 						
 						<div id="viewerImg"></div>
 						<div id="loadingSpinner"></div>
 						<div id="loadingBar"></div>
-						<div id="loadBtn" >load 3D model</div>
 						<div id="fullscreenBtn"></div>
 						<div id="previousBtnWrapper" class="clickable" onclick="clickManager('previous')">
 							<div id="previousBtn" class="arrow"></div>

@@ -667,8 +667,23 @@ model-viewer{
     position: absolute;
     top:0px;
     left:0px;
-    display:block;
+	display:block;
+	--progress-bar-color: rgb(49, 127, 230);
 }
+
+#lazy-load-poster {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+	background-image: url("../images/thumbnails/19RedBot1.png");
+	filter: blur(10px);
+    background-size: cover;
+    background-repeat: no-repeat;
+	background-position: center;
+	z-index:0;
+  }
 
 #loadingSpinner{
     opacity: 0;

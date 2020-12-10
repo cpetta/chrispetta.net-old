@@ -1,6 +1,6 @@
 let loaded = false;
 let clicked = -1;
-let lastClicked = 0;
+let lastClicked = -1;
 let loadingProgress = 0;
 let fullscreen = false;
 let viewport = document.getElementById("viewer3d");
@@ -62,7 +62,7 @@ function clickManager(number) {
 function CanvasManager(clicked) {
 	if(clicked === -1) {
 		if(loaded) {
-			fadeIn(document.getElementById("threejsCanvas"));
+			fadeIn(document.getElementById("modelViewer"));
 		}
 		else {
 			fadeIn(loadBtn);
@@ -70,7 +70,7 @@ function CanvasManager(clicked) {
 	}
 	else {
 		if(loaded) {
-			fadeOut(document.getElementById("threejsCanvas"));
+			fadeOut(document.getElementById("modelViewer"));
 		}
 		fadeOut(loadBtn);
 	}
