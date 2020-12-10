@@ -70,7 +70,7 @@
 			</video>
 		</div>
 		<div id="webGLViewer">
-			<article style="display:none;">
+			<article>
 				<div class="articleContainer">
 					<div id="viewer3d" class="defautViewer3D">
 						<div id="backgroundFor3D"
@@ -92,10 +92,10 @@
 						<div id="loadingBar"></div>
 						<div id="loadBtn" class="fadeIn">load 3D model</div>
 						<div id="fullscreenBtn"></div>
-						<div id="previousBtnWrapper" class="clickable">
+						<div id="previousBtnWrapper" class="clickable" onclick="clickManager('previous')">
 							<div id="previousBtn" class="arrow"></div>
 						</div>
-						<div id="nextBtnWrapper" class="clickable">
+						<div id="nextBtnWrapper" class="clickable" onclick="clickManager('next')">
 							<div id="nextBtn" class="arrow"></div>
 						</div>
 					</div>
@@ -110,27 +110,27 @@
 							<li>
 								<strong>Date Finished</strong>
 								<hr />
-								12/12/12
+								08/13/20
 							</li>
 							<li>
 								<strong>File Size</strong>
 								<hr />
-								200MB
+								470MB
 							</li>
 							<li>
 								<strong>Texture Resolution</strong>
 								<hr />
-								4K (3860x3860)
+								4K (4096x4096)
 							</li>
 							<li>
 								<strong>Verticies</strong>
 								<hr />
-								250,123
+								429,301
 							</li>
 							<li>
 								<strong>Faces</strong>
 								<hr />
-								100,123
+								395,037
 							</li>
 							<li>
 								<strong>Material Sets</strong>
@@ -154,6 +154,7 @@
 					<img class="clickable" onclick="clickManager(5)" src="images/thumbnails/19RedBot5.png" alt=""/>
 				</div>
 			</article>
+	
 			<script type="module">
 				import * as THREE from './nodejs/three/build/three.module.js';
 				import { OrbitControls } from './nodejs/three/examples/jsm/controls/OrbitControls.js';
@@ -166,15 +167,15 @@
 				import { RGBELoader } from '../node_modules/three/examples/jsm/loaders/RGBELoader.js';
 				*/
 				export default onload;
-			
+	
 				var orbitControls;
 				var camera, scene, renderer, loader;
 				var gltf, background, envMap, mixer, gui, extensionControls;
 				var clock = new THREE.Clock();
-			
+	
 				var container = document.getElementById("viewer3d");
 				let fullscreenBtn = document.getElementById("fullscreenBtn");
-			
+	
 				var scenes = {
 					Boombox: {
 						name: 'Robot',
@@ -187,13 +188,13 @@
 						addEnvMap: true
 					},
 				};
-			
+	
 				var state = {
 					scene: Object.keys( scenes )[ 0 ],
 					extension: scenes[ Object.keys( scenes )[ 0 ] ].extensions[ 0 ],
 					playAnimation: true
 				};
-			
+	
 				function onload() {
 					renderer = new THREE.WebGLRenderer( { antialias: true } );
 					renderer.setPixelRatio( window.devicePixelRatio );
@@ -221,32 +222,32 @@
 						});
 					var pmremGenerator = new THREE.PMREMGenerator( renderer );
 					pmremGenerator.compileEquirectangularShader();
-			
+	
 				}
-			
+	
 				function initScene( sceneInfo ) {
 					scene = new THREE.Scene();
 					scene.background = new THREE.Color( 0x222222 );
 					camera = new THREE.PerspectiveCamera( 45, container.offsetWidth / container.offsetHeight, 0.001, 1000 );
 					scene.add( camera );
-			
+	
 					var spot1;
-			
+	
 					if ( sceneInfo.addLights ) {
 						var ambient = new THREE.AmbientLight( 0x222222 );
 						scene.add( ambient );
-			
+	
 						var directionalLight = new THREE.DirectionalLight( 0xdddddd, 4 );
 						directionalLight.position.set( 0, 0, 1 ).normalize();
 						scene.add( directionalLight );
-			
+	
 						spot1 = new THREE.SpotLight( 0xffffff, 1 );
 						spot1.position.set( 5, 10, 5 );
 						spot1.angle = 0.50;
 						spot1.penumbra = 0.75;
 						spot1.intensity = 100;
 						spot1.decay = 2;
-			
+	
 						if ( sceneInfo.shadows ) {
 							spot1.castShadow = true;
 							spot1.shadow.bias = 0.0001;
@@ -255,16 +256,16 @@
 						}
 						scene.add( spot1 );
 					}
-			
+	
 					if ( sceneInfo.shadows ) {
 						renderer.shadowMap.enabled = true;
 						renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 					}
-			
+	
 					// TODO: Reuse existing OrbitControls, GLTFLoaders, and so on
-			
+	
 					orbitControls = new OrbitControls( camera, renderer.domElement );
-			
+	
 					if ( sceneInfo.addGround ) {
 						var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xFFFFFF } );
 						var ground = new THREE.Mesh( new THREE.PlaneBufferGeometry( 512, 512 ), groundMaterial );
@@ -278,7 +279,7 @@
 						ground.rotation.x = - Math.PI / 2;
 						scene.add( ground );
 					}
-			
+	
 					loader = new GLTFLoader();
 					var url = sceneInfo.url.replace( /%s/g, state.extension );
 					if ( state.extension === 'glTF-Binary' ) {
@@ -293,26 +294,26 @@
 						if ( sceneInfo.cameraPos ) {
 							camera.position.copy( sceneInfo.cameraPos );
 						}
-			
+	
 						if ( sceneInfo.center ) {
 							orbitControls.target.copy( sceneInfo.center );
 						}
-			
+	
 						if ( sceneInfo.objectPosition ) {
 							object.position.copy( sceneInfo.objectPosition );
 							if ( spot1 ) {
 								spot1.target.position.copy( sceneInfo.objectPosition );
 							}
 						}
-			
+	
 						if ( sceneInfo.objectRotation ) {
 							object.rotation.copy( sceneInfo.objectRotation );
 						}
-			
+	
 						if ( sceneInfo.objectScale ) {
 							object.scale.copy( sceneInfo.objectScale );
 						}
-			
+	
 						if ( sceneInfo.addEnvMap ) {
 							object.traverse( function ( node ) {
 								if ( node.material && ( node.material.isMeshStandardMaterial ||
@@ -323,7 +324,7 @@
 							});
 							scene.background = background;
 						}
-			
+	
 						object.traverse( function ( node ) {
 							if ( node.isMesh || node.isLight ) node.castShadow = true;
 						});
@@ -332,25 +333,25 @@
 					}, undefined, function ( error ) {
 						console.error( error );
 					});
-			
+	
 				}
-			
+	
 				function onWindowResize() {
 					camera.aspect = container.offsetWidth / container.offsetHeight;
 					camera.updateProjectionMatrix();
 					renderer.setSize( container.offsetWidth, container.offsetHeight );
 				}
-			
+	
 				function animate() {
 					requestAnimationFrame( animate );
 					orbitControls.update();
 					render();
 				}
-			
+	
 				function render() {
 					renderer.render( scene, camera );
 				}
-			
+	
 				//Personal addition
 				
 				let modelLoaded = false;
@@ -365,7 +366,7 @@
 						threejsCanvas.style.display = "block";
 					}
 				}
-			
+	
 				document.getElementById("loadBtn");
 				loadBtn.addEventListener("click", load);
 			</script>

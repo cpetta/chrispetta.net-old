@@ -1,4 +1,6 @@
 let loaded = false;
+let clicked = -1;
+let lastClicked = 0;
 let loadingProgress = 0;
 let fullscreen = false;
 let viewport = document.getElementById("viewer3d");
@@ -7,6 +9,7 @@ let viewerImg = document.getElementById("viewerImg");
 let fullscreenBtn = document.getElementById("fullscreenBtn");
 let loadingSpinner = document.getElementById("loadingSpinner");
 let loadingBar = document.getElementById("loadingBar");
+
 Image.prototype.completedPercentage = 0;
 
 let imgs = [];
@@ -42,9 +45,18 @@ fullscreenBtn.addEventListener("click", fullscreenToggle)
 document.body.onload = imageURLs.forEach(prepareDisplayImgs);
 
 function clickManager(number) {
-	let clicked = number - 1;
+	if(number == 'next' && lastClicked < imageURLs.length - 1) {
+		clicked = lastClicked + 1;
+	}
+	else if(number == 'previous' && lastClicked > -1) {
+		clicked = lastClicked - 1;
+	}
+	if(number != 'next' && number != 'previous') {
+		clicked = number - 1;
+	}
 	CanvasManager(clicked);
 	loadingManager(clicked);
+	lastClicked = clicked;
 }
 
 function CanvasManager(clicked) {
@@ -79,11 +91,6 @@ function loadingManager(clicked) {
 		loadAndAddImage(viewerImg, clicked);
 		imgLoaded[clicked] = true;
 	}
-
-	//loadingSpinnerShow();
-	//loadingBarShow();
-	//loadingSpinnerHide();
-
 }
 
 function prepareDisplayImgs(item, index) {
@@ -94,7 +101,6 @@ function prepareDisplayImgs(item, index) {
 function loadAndAddImage(imgContainer, number) {
 	let img = imgs[number];
 	img.load(`images/${imageURLs[number]}`);
-	//img.load(`images/${imageURLs[number]}`);
 	
 	let promiseToLoadImg = new Promise((resolve) => {
 		let progress = 5;
@@ -112,19 +118,11 @@ function loadAndAddImage(imgContainer, number) {
 				loadingBarUpdate(progress);
 			}
 		}
-	  }) 
-	  
-	  promiseToLoadImg.then(() => {
-		// successMessage is whatever we passed in the resolve(...) function above.
-		// It doesn't have to be a string, but if it is only a succeed message, it probably will be.
-		console.log("Yay! ");
+	});
+	promiseToLoadImg.then(() => {
 		fadeIn(img);
-	imgContainer.appendChild(img);
-	  });
-
-	// Add a wait until the image has completely loaded and then fade in.
-
-	
+		imgContainer.appendChild(img);
+	});	
 }
 
 function fullscreenToggle() {
@@ -138,9 +136,8 @@ function fullscreenToggle() {
 	}
 }
 
-let elem = document.documentElement;
-
 function fullscreenOpen() {
+	let elem = document.documentElement;
 	if (elem.requestFullscreen) {
 		elem.requestFullscreen();
 	} else if (elem.mozRequestFullScreen) { /* Firefox */
@@ -159,7 +156,7 @@ function fullscreenOpen() {
 
 function fullscreenClose() {
 
-	function fullscreenclose2() {
+	function fullscreencloseHelper() {
 		viewport.classList.add("defautViewer3D");
 		viewport.style.width = "";
 		viewport.style.minWidth = "";
@@ -168,68 +165,25 @@ function fullscreenClose() {
 	}
 
 	if (document.exitFullscreen) {
-		fullscreenclose2();
+		fullscreencloseHelper();
 		document.exitFullscreen();
 	} else if (document.mozCancelFullScreen) {
-		fullscreenclose2();
+		fullscreencloseHelper();
 		document.mozCancelFullScreen();
 	} else if (document.webkitExitFullscreen) {
-		fullscreenclose2();
+		fullscreencloseHelper();
 		document.webkitExitFullscreen();
 	} else if (document.msExitFullscreen) {
-		fullscreenclose2();
+		fullscreencloseHelper();
 		document.msExitFullscreen();
 	}
 	else {
-		fullscreenclose2();
+		fullscreencloseHelper();
 	}
-}
-
-function loadingBarShow() {
-	loadingBar.classList.add("fadeIn");
-	loadingBar.style.opacity = "1";
 }
 
 function loadingBarUpdate(width) {
 	loadingBar.style.width = `calc(${width}% - 32px - 10px`;
-}
-
-function loadingBarHide() {
-	loadingBar.classList.add("fadeOut");
-	loadingBar.style.opacity = "0";
-}
-/*
-function loadingBarUpdate(PercentComplete) {
-	loadingBar.style.width = `calc(${PercentComplete}% - 32px - 10px`;
-	
-	if (loadingProgress == 0) {
-		loadingProgress = 1;
-		var loadingBar = document.getElementById("loadingBar");
-		var width = 0;
-		var id = setInterval(frame, 100);
-
-		function frame() {
-			if (width >= 100) {
-				clearInterval(id);
-				loadingBar.classList.add("fadeOut");
-				loadingBar.style.opacity = "0";
-			} else {
-				width++;
-				loadingBar.style.width = `calc(${width}% - 32px - 10px`;
-			}
-		}
-
-	}
-	
-}
-*/
-function loadingSpinnerShow() {
-	loadingSpinner.style.opacity = "1";
-	loadingSpinner.classList.add("fadeIn");
-}
-
-function loadingSpinnerHide() {
-	loadingSpinner.style.opacity = "0";
 }
 
 function fadeOut(obj){
@@ -238,8 +192,8 @@ function fadeOut(obj){
 	if(obj.classList.contains("fadeIn")) {
 		obj.classList.add("fadeOut");
 		obj.classList.remove("fadeIn");
+		setTimeout(() => {obj.style.display = "none";}, 300);
 	}
-	setTimeout(() => {obj.style.display = "none";}, 300);
 	visable = false;
 };
 
