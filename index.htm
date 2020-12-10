@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta charset="utf-8"/>
+	<title>Portfolio</title>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="css/styles.css"/>
+	<link rel="icon" type="image/png" href="images/portlogo.svg" sizes="32x32" />
+</head>
+
+<body>
+	<header id="home">
+		<img class="logo" alt="Logo" src="images/portlogo.svg" height="50" width="50" />
+		<div class="humburgcontainer" onclick="navtoggle()">
+			<div class="hamburg"><!--
+				<div class="hambar top"></div>
+				<div class="hambar middle" style="background-color: purple"></div>
+				<div class="hambar bottom"></div>
+			--></div>
+			<script>
+				function navtoggle() {
+					var nav = document.getElementById("nav");
+					if (nav.style.display === "grid") {nav.style.removeProperty('display');}
+					else {nav.style.display = "grid";}
+				}
+			</script>
+		</div>
+		<nav id="nav">
+			<a href="#home">
+				<div class="text">
+					Home
+					<div class="underline"></div>
+				</div>
+			</a>
+			<a href="#webDev">
+				<div class="text">
+					Web Dev
+					<div class="underline"></div>
+				</div>
+			</a>
+			<a href="#modeling">
+				<div class="text">
+					3D Modeling
+					<div class="underline"></div>
+				</div>
+			</a>
+			<a href="#about">
+				<div class="text">
+					About
+					<div class="underline"></div>
+				</div>
+			</a>
+			<a href="#ContactForm">
+				<div class="text">
+					Contact
+					<div class="underline"></div>
+				</div>
+			</a>
+		</nav>
+	</header>
+	
+	<main>
+		<div class="catchImgContainer" style="background-image: url(images/line.jpg);">
+			<div class="catchText">
+				3D Models by Commission
+			</div>
+			<video id="catchVideo" autoplay muted loop>
+				<source src="images/webIntro3.mp4" type="video/mp4">
+			</video>
+		</div>
+		<div id="webGLViewer">
+			<article style="display:none;">
+				<div class="articleContainer">
+					<div id="viewer3d" class="defautViewer3D">
+						<div id="backgroundFor3D"
+						style="
+						position: relative;
+						width:100%;
+						background-image: url(images/thumbnails/19RedBot1.png);
+						filter: blur(10px);
+						background-repeat: no-repeat;background-size: cover;
+						z-index:0;
+						
+						height:0px;
+						padding-top: 100%;
+						"
+						></div>
+						
+						<div id="viewerImg"></div>
+						<div id="loadingSpinner"></div>
+						<div id="loadingBar"></div>
+						<div id="loadBtn" class="fadeIn">load 3D model</div>
+						<div id="fullscreenBtn"></div>
+						<div id="previousBtnWrapper" class="clickable">
+							<div id="previousBtn" class="arrow"></div>
+						</div>
+						<div id="nextBtnWrapper" class="clickable">
+							<div id="nextBtn" class="arrow"></div>
+						</div>
+					</div>
+					<div id="iteminformation">
+						<h1>
+							Red Robot
+						</h1>
+						<hr />
+						This Red Robot is a 3D model of a friends drawing. The model was created and rendered in Blender, 
+						the textures were created in Substance Painter, the entire process took aproximately 50-60 hours.
+						<ul class="specs">
+							<li>
+								<strong>Date Finished</strong>
+								<hr />
+								12/12/12
+							</li>
+							<li>
+								<strong>File Size</strong>
+								<hr />
+								200MB
+							</li>
+							<li>
+								<strong>Texture Resolution</strong>
+								<hr />
+								4K (3860x3860)
+							</li>
+							<li>
+								<strong>Verticies</strong>
+								<hr />
+								250,123
+							</li>
+							<li>
+								<strong>Faces</strong>
+								<hr />
+								100,123
+							</li>
+							<li>
+								<strong>Material Sets</strong>
+								<hr />
+								7
+							</li>
+							
+						</ul>
+						<!--<div id="purchaseInformation">
+							<div class="price">$80</div>
+							<div id="btnBuy">Purchase</div>
+						</div>-->
+					</div>
+				</div>
+				<div class="additionalOptionsContainer">
+					<img class="clickable" onclick="clickManager(0)" src="images/thumbnails/19RedBot1.png" alt=""/>
+					<img class="clickable" onclick="clickManager(1)" src="images/thumbnails/19RedBot1.png" alt=""/>
+					<img class="clickable" onclick="clickManager(2)" src="images/thumbnails/19RedBot2.png" alt=""/>
+					<img class="clickable" onclick="clickManager(3)" src="images/thumbnails/19RedBot3.png" alt=""/>
+					<img class="clickable" onclick="clickManager(4)" src="images/thumbnails/19RedBot4.png" alt=""/>
+					<img class="clickable" onclick="clickManager(5)" src="images/thumbnails/19RedBot5.png" alt=""/>
+				</div>
+			</article>
+			<script type="module">
+				import * as THREE from './nodejs/three/build/three.module.js';
+				import { OrbitControls } from './nodejs/three/examples/jsm/controls/OrbitControls.js';
+				import { GLTFLoader } from './nodejs/three/examples/jsm/loaders/GLTFLoader.js';
+				import { RGBELoader } from './nodejs/three/examples/jsm/loaders/RGBELoader.js';
+				/*
+				import * as THREE from '../node_modules/three/build/three.module.js';
+				import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
+				import { GLTFLoader } from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+				import { RGBELoader } from '../node_modules/three/examples/jsm/loaders/RGBELoader.js';
+				*/
+				export default onload;
+			
+				var orbitControls;
+				var camera, scene, renderer, loader;
+				var gltf, background, envMap, mixer, gui, extensionControls;
+				var clock = new THREE.Clock();
+			
+				var container = document.getElementById("viewer3d");
+				let fullscreenBtn = document.getElementById("fullscreenBtn");
+			
+				var scenes = {
+					Boombox: {
+						name: 'Robot',
+						url: 'models/redbox5.gltf',
+						author: 'Microsoft',
+						authorURL: 'https://www.microsoft.com/',
+						cameraPos: new THREE.Vector3(-0.4, 0.4, -1.50 ),
+						objectRotation: new THREE.Euler( 0, Math.PI, 0 ),
+						extensions: [ 'glTF', 'glTF-pbrSpecularGlossiness', 'glTF-Binary', 'glTF-dds' ],
+						addEnvMap: true
+					},
+				};
+			
+				var state = {
+					scene: Object.keys( scenes )[ 0 ],
+					extension: scenes[ Object.keys( scenes )[ 0 ] ].extensions[ 0 ],
+					playAnimation: true
+				};
+			
+				function onload() {
+					renderer = new THREE.WebGLRenderer( { antialias: true } );
+					renderer.setPixelRatio( window.devicePixelRatio );
+					renderer.setSize( container.offsetWidth, container.offsetHeight);
+					renderer.outputEncoding = THREE.sRGBEncoding;
+					renderer.toneMapping = THREE.ACESFilmicToneMapping;
+					renderer.toneMappingExposure = 1;
+					renderer.physicallyCorrectLights = true;
+					container.appendChild( renderer.domElement );
+					renderer.domElement.id = "threejsCanvas";
+					renderer.domElement.classList.add("fadeIn");
+					window.addEventListener( 'resize', onWindowResize, false );
+					fullscreenBtn.addEventListener("click", onWindowResize)
+					
+					// Load background and generate envMap
+					new RGBELoader()
+						.setDataType( THREE.UnsignedByteType )
+						.setPath( './textures/' )
+						.load( 'potsdamer_platz_1k.hdr', function ( texture ) {
+							envMap = pmremGenerator.fromEquirectangular( texture ).texture;
+							pmremGenerator.dispose();
+							background = envMap;
+							initScene( scenes[ state.scene ] );
+							animate();
+						});
+					var pmremGenerator = new THREE.PMREMGenerator( renderer );
+					pmremGenerator.compileEquirectangularShader();
+			
+				}
+			
+				function initScene( sceneInfo ) {
+					scene = new THREE.Scene();
+					scene.background = new THREE.Color( 0x222222 );
+					camera = new THREE.PerspectiveCamera( 45, container.offsetWidth / container.offsetHeight, 0.001, 1000 );
+					scene.add( camera );
+			
+					var spot1;
+			
+					if ( sceneInfo.addLights ) {
+						var ambient = new THREE.AmbientLight( 0x222222 );
+						scene.add( ambient );
+			
+						var directionalLight = new THREE.DirectionalLight( 0xdddddd, 4 );
+						directionalLight.position.set( 0, 0, 1 ).normalize();
+						scene.add( directionalLight );
+			
+						spot1 = new THREE.SpotLight( 0xffffff, 1 );
+						spot1.position.set( 5, 10, 5 );
+						spot1.angle = 0.50;
+						spot1.penumbra = 0.75;
+						spot1.intensity = 100;
+						spot1.decay = 2;
+			
+						if ( sceneInfo.shadows ) {
+							spot1.castShadow = true;
+							spot1.shadow.bias = 0.0001;
+							spot1.shadow.mapSize.width = 2048;
+							spot1.shadow.mapSize.height = 2048;
+						}
+						scene.add( spot1 );
+					}
+			
+					if ( sceneInfo.shadows ) {
+						renderer.shadowMap.enabled = true;
+						renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+					}
+			
+					// TODO: Reuse existing OrbitControls, GLTFLoaders, and so on
+			
+					orbitControls = new OrbitControls( camera, renderer.domElement );
+			
+					if ( sceneInfo.addGround ) {
+						var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xFFFFFF } );
+						var ground = new THREE.Mesh( new THREE.PlaneBufferGeometry( 512, 512 ), groundMaterial );
+						ground.receiveShadow = !! sceneInfo.shadows;
+						
+						if ( sceneInfo.groundPos ) {
+							ground.position.copy( sceneInfo.groundPos );
+						} else {
+							ground.position.z = - 70;
+						}
+						ground.rotation.x = - Math.PI / 2;
+						scene.add( ground );
+					}
+			
+					loader = new GLTFLoader();
+					var url = sceneInfo.url.replace( /%s/g, state.extension );
+					if ( state.extension === 'glTF-Binary' ) {
+						url = url.replace( '.gltf', '.glb' );
+					}
+					var loadStartTime = performance.now();
+					loader.load( url, function ( data ) {
+						gltf = data;
+						var object = gltf.scene;
+						console.info( 'Load time: ' + ( performance.now() - loadStartTime ).toFixed( 2 ) + ' ms.' );
+						
+						if ( sceneInfo.cameraPos ) {
+							camera.position.copy( sceneInfo.cameraPos );
+						}
+			
+						if ( sceneInfo.center ) {
+							orbitControls.target.copy( sceneInfo.center );
+						}
+			
+						if ( sceneInfo.objectPosition ) {
+							object.position.copy( sceneInfo.objectPosition );
+							if ( spot1 ) {
+								spot1.target.position.copy( sceneInfo.objectPosition );
+							}
+						}
+			
+						if ( sceneInfo.objectRotation ) {
+							object.rotation.copy( sceneInfo.objectRotation );
+						}
+			
+						if ( sceneInfo.objectScale ) {
+							object.scale.copy( sceneInfo.objectScale );
+						}
+			
+						if ( sceneInfo.addEnvMap ) {
+							object.traverse( function ( node ) {
+								if ( node.material && ( node.material.isMeshStandardMaterial ||
+									( node.material.isShaderMaterial && node.material.envMap !== undefined ) ) ) {
+									node.material.envMap = envMap;
+									node.material.envMapIntensity = 1.5; // boombox seems too dark otherwise
+								}
+							});
+							scene.background = background;
+						}
+			
+						object.traverse( function ( node ) {
+							if ( node.isMesh || node.isLight ) node.castShadow = true;
+						});
+						scene.add( object );
+						onWindowResize();
+					}, undefined, function ( error ) {
+						console.error( error );
+					});
+			
+				}
+			
+				function onWindowResize() {
+					camera.aspect = container.offsetWidth / container.offsetHeight;
+					camera.updateProjectionMatrix();
+					renderer.setSize( container.offsetWidth, container.offsetHeight );
+				}
+			
+				function animate() {
+					requestAnimationFrame( animate );
+					orbitControls.update();
+					render();
+				}
+			
+				function render() {
+					renderer.render( scene, camera );
+				}
+			
+				//Personal addition
+				
+				let modelLoaded = false;
+				function load() {
+					if(!modelLoaded) {
+						onload();
+						loadBtn.style.display = "none";
+						modelLoaded = true;
+					}
+					else {
+						let threejsCanvas = document.getElementById("threejsCanvas");
+						threejsCanvas.style.display = "block";
+					}
+				}
+			
+				document.getElementById("loadBtn");
+				loadBtn.addEventListener("click", load);
+			</script>
+			<script src="js/custem.js" async defer></script>
+		</div>
+		<a  href="#home" id="gotoTopBtn"><div class="upArrow"></div></a>
+		<!--
+		<div id="webDev">	
+			<div class="label">Website Development</div>
+			<div class="showcasewrapper">
+				<a href="">
+					<img src="images/Renders/19RedBot4.jpg" alt="'RedBot"/>
+				</a>
+			</div>
+		</div>
+	-->
+	
+		<div id="modeling">	
+			<div class="label">3D Models</div>
+			<hr />
+			<div class="showcasewrapper">
+				<a onclick="showWebGL(0)" href="#webGLViewer">
+					<img src="images/Renders/19RedBot4.jpg" alt="'RedBot"/>
+				</a>
+				<a href="#webGLViewer" onclick="showWebGL(0)">
+					<img src="images/Renders/18CastIronStove3.png" alt="'RedBot"/>
+				</a>
+				<a href="#webGLViewer" onclick="showWebGL(0)">
+					<img src="images/Renders/16CatBed0.png" alt="'RedBot"/>
+				</a>
+				<a href="#webGLViewer" onclick="showWebGL(0)">
+					<img src="images/Renders/14stairs.png" alt="'RedBot"/>
+				</a>
+				<a href="#webGLViewer" onclick="showWebGL(0)">
+					<img src="images/yellowBot.png" alt="'RedBot"/>
+				</a>
+				<a href="#webGLViewer" onclick="showWebGL(0)">
+					<img src="images/Renders/4Apple2.png" alt="'RedBot"/>
+				</a>
+				<a href="#webGLViewer" onclick="showWebGL(0)">
+					<img src="images/Renders/5Orange.png" alt="'RedBot"/>
+				</a>
+				<a href="#webGLViewer" onclick="showWebGL(0)">
+					<img src="images/Carrot2.png" alt="'RedBot"/>
+				</a>
+				<a href="#webGLViewer" onclick="showWebGL(0)">
+					<img src="images/bread2.png" alt="'RedBot"/>
+				</a>
+				<a href="#webGLViewer" onclick="showWebGL(0)">
+					<img src="images/Renders/11Banana.png" alt="'RedBot"/>
+				</a>
+			</div>
+		</div>
+		<div id="about">
+			<div class="label" >About</div>
+			<hr />
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			</p>
+		</div>
+		
+		<div id="ContactForm">
+			<div class="label">Contact</div>
+			<hr />
+			<form onsubmit="" name="contact" action="" method="post">
+				<input name="name" class="" value="" placeholder="Name" type="text" required=""/>
+				<input name="email" value="" placeholder="Email Address" type="text" required=""/>
+				<input name="phone" placeholder="Phone Number (Optional)" type="text" required=""/>
+				<textarea name="message" placeholder="Message, Commision Request, or Whatever"></textarea>
+				<input class="submitButton" type="submit" name="submit" value="Send" />
+			</form>
+		</div>
+	</main>
+
+	
+	<footer class="shade2">
+		<p>
+			&copy; Michishi 2020
+		</p>
+		<span style="display:flex;">
+			<a href="https://www.linkedin.com/">
+				<img src="images/linkedinLogo.png" height="32" style="padding:5px;" alt="linkedin"/>
+			</a>
+			<a href="https://github.com/">
+				<img src="images/GitHub-Mark-32px.png" style="padding:5px;" alt="Checkout this site is on Github"/>
+			</a>
+		</span>
+	</footer>
+	<script src="js/main.js"></script>
+</body>
+</html>
