@@ -15,11 +15,11 @@ Image.prototype.completedPercentage = 0;
 let imgs = [];
 let imgLoaded = [];
 let imageURLs = [
-	"19RedBot1.jpg",
-	"19RedBot2.jpg",
-	"19RedBot3.jpg",
-	"19RedBot4.jpg",
-	"19RedBot5.jpg"
+	"redBot1.jpg",
+	"redBot2.jpg",
+	"redBot3.jpg",
+	"redBot4.jpg",
+	"redBot5.jpg"
 ];
 
 Image.prototype.load = async function(url){
@@ -100,7 +100,7 @@ function prepareDisplayImgs(item, index) {
 
 function loadAndAddImage(imgContainer, number) {
 	let img = imgs[number];
-	img.load(`images/${imageURLs[number]}`);
+	img.load(`3DProjects/Redbot/images/${imageURLs[number]}`);
 	
 	let promiseToLoadImg = new Promise((resolve) => {
 		let progress = 5;

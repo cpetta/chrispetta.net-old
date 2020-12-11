@@ -84,7 +84,16 @@
 						padding-top: 100%;
 						"
 						></div>
-						<model-viewer id="modelViewer" src="models/redbot.glb" reveal="interaction" alt="An interactive 3D model of a red robot" auto-rotate camera-controls shadow-intensity="1" >
+						<model-viewer 
+						id="modelViewer"
+						src="3DProjects/Redbot/redbot.glb"
+						reveal="interaction"
+						alt="An interactive 3D model of a red robot"
+						auto-rotate
+						camera-controls
+						shadow-intensity="1"
+
+						>
 							<div id="lazy-load-poster" slot="poster"></div>
 							<div id="loadBtn" slot="poster">load 3D model</div>
 						</model-viewer>
@@ -143,12 +152,12 @@
 					</div>
 				</div>
 				<div class="additionalOptionsContainer">
-					<img class="clickable" onclick="clickManager(0)" src="images/thumbnails/19RedBot1.png" alt=""/>
-					<img class="clickable" onclick="clickManager(1)" src="images/thumbnails/19RedBot1.png" alt=""/>
-					<img class="clickable" onclick="clickManager(2)" src="images/thumbnails/19RedBot2.png" alt=""/>
-					<img class="clickable" onclick="clickManager(3)" src="images/thumbnails/19RedBot3.png" alt=""/>
-					<img class="clickable" onclick="clickManager(4)" src="images/thumbnails/19RedBot4.png" alt=""/>
-					<img class="clickable" onclick="clickManager(5)" src="images/thumbnails/19RedBot5.png" alt=""/>
+					<img class="clickable" onclick="clickManager(0)" src="3DProjects/Redbot/images/thumbnails/redBot0.png" alt=""/>
+					<img class="clickable" onclick="clickManager(1)" src="3DProjects/Redbot/images/thumbnails/redBot1.png" alt=""/>
+					<img class="clickable" onclick="clickManager(2)" src="3DProjects/Redbot/images/thumbnails/redBot2.png" alt=""/>
+					<img class="clickable" onclick="clickManager(3)" src="3DProjects/Redbot/images/thumbnails/redBot3.png" alt=""/>
+					<img class="clickable" onclick="clickManager(4)" src="3DProjects/Redbot/images/thumbnails/redBot4.png" alt=""/>
+					<img class="clickable" onclick="clickManager(5)" src="3DProjects/Redbot/images/thumbnails/redBot5.png" alt=""/>
 				</div>
 			</article>
 			<script src="js/custem.js" async defer></script>
@@ -169,35 +178,27 @@
 			<div class="label">3D Models</div>
 			<hr />
 			<div class="showcasewrapper">
-				<a onclick="showWebGL(0)" href="#webGLViewer">
-					<img src="images/Renders/19RedBot4.jpg" alt="'RedBot"/>
+				<a href="#webGLViewer" onclick="showWebGL(0)">
+					<img src="3DProjects/Chair/chair.jpg" alt="'Chair"/>
 				</a>
 				<a href="#webGLViewer" onclick="showWebGL(0)">
-					<img src="images/Renders/18CastIronStove3.png" alt="'RedBot"/>
+					<img src="3DProjects/Redbot/redBot.jpg" alt="'Red Robot"/>
 				</a>
 				<a href="#webGLViewer" onclick="showWebGL(0)">
-					<img src="images/Renders/16CatBed0.png" alt="'RedBot"/>
+					<!--<img src="images/Renders/18CastIronStove3.png" alt="'RedBot"/>-->
+					<img src="3DProjects/Stove/Stove.jpg" alt="'Stove"/>
 				</a>
 				<a href="#webGLViewer" onclick="showWebGL(0)">
-					<img src="images/Renders/14stairs.png" alt="'RedBot"/>
+					<img src="3DProjects/CatBed/catBed.jpg" alt="'CatBed"/>
 				</a>
 				<a href="#webGLViewer" onclick="showWebGL(0)">
-					<img src="images/yellowBot.png" alt="'RedBot"/>
+					<img src="3DProjects/Staircase/stairs.jpg" alt="'Stairs"/>
 				</a>
 				<a href="#webGLViewer" onclick="showWebGL(0)">
-					<img src="images/Renders/4Apple2.png" alt="'RedBot"/>
+					<img src="3DProjects/YellowBot/yellowBot0.jpg" alt="'Yellow Robot"/>
 				</a>
 				<a href="#webGLViewer" onclick="showWebGL(0)">
-					<img src="images/Renders/5Orange.png" alt="'RedBot"/>
-				</a>
-				<a href="#webGLViewer" onclick="showWebGL(0)">
-					<img src="images/Carrot2.png" alt="'RedBot"/>
-				</a>
-				<a href="#webGLViewer" onclick="showWebGL(0)">
-					<img src="images/bread2.png" alt="'RedBot"/>
-				</a>
-				<a href="#webGLViewer" onclick="showWebGL(0)">
-					<img src="images/Renders/11Banana.png" alt="'RedBot"/>
+					<img src="3DProjects/Foods/foods.jpg" alt="'Apple"/>
 				</a>
 			</div>
 		</div>
