@@ -27,7 +27,7 @@ let imgLoaded;
 Image.prototype.completedPercentage = 0;
 
 let ModelProjects;
-fetch('3Dprojects/3DProjects.json')
+fetch('3DProjects/3DProjects.json')
 .then(response => response.json())
 .then(data => ModelProjects = data)
 .then(ModelProjects => {
@@ -131,7 +131,6 @@ async function modelProjectManager(clicked) {
 	}
 	else {
 		setTimeout(modelProjectManager(clicked), 100);
-		console.log("not loaded yet.");
 	}
 }
 
@@ -213,7 +212,6 @@ function prepareDisplayImgs(item, imageIndex, projIndex) {
 
 function loadAndAddImage(imgContainer, number) {
 	let img = imgs[ProjectIndex][number];
-	console.log(img)
 	img.load(`3DProjects/${ModelProjects[ProjectIndex].folder}/images/${ModelProjects[ProjectIndex].images[number]}`);
 	
 	let promiseToLoadImg = new Promise((resolve) => {
