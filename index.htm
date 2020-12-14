@@ -60,13 +60,21 @@
 	</header>
 	
 	<main>
-		<div class="catchImgContainer" style="background-image: url(images/line.jpg);">
+		<a  href="#home" id="gotoTopBtn"><div class="upArrow"></div></a>
+		<div class="catchImgContainer">
 			<div class="catchText">
 				3D Models by Commission
 			</div>
 			<video id="catchVideo" autoplay muted loop>
 				<source src="images/webIntro3.mp4" type="video/mp4">
 			</video>
+		</div>
+
+		<div id="webDev">	
+			<div class="label">Website Development</div>
+			<div class="showcasewrapper">
+				Coming soon&trade;.
+			</div>
 		</div>
 
 		<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
@@ -92,7 +100,7 @@
 						auto-rotate
 						camera-controls
 						shadow-intensity="1"
-
+						exposure="1.2"
 						>
 							<div id="lazy-load-poster" slot="poster"></div>
 							<div id="loadBtn" slot="poster">load 3D model</div>
@@ -110,48 +118,47 @@
 						</div>
 					</div>
 					<div id="iteminformation">
-						<h1>
+						<h1 id="title">
 							Red Robot
 						</h1>
 						<hr />
-						This Red Robot is a 3D model of a friends drawing. The model was created and rendered in Blender, 
-						the textures were created in Substance Painter, the entire process took aproximately 50-60 hours.
-						<ul class="specs">
+						<div id="description"></div>
+						<ul id="specs" class="specs">
 							<li>
 								<strong>Date Finished</strong>
 								<hr />
-								08/13/20
+								<div id="date"></div>
 							</li>
 							<li>
 								<strong>File Size</strong>
 								<hr />
-								470MB
+								<div id="size"></div>
 							</li>
 							<li>
 								<strong>Texture Resolution</strong>
 								<hr />
-								4K (4096x4096)
+								<div id="textureRez"></div>
 							</li>
 							<li>
 								<strong>Verticies</strong>
 								<hr />
-								429,301
+								<div id="verts"></div>
 							</li>
 							<li>
 								<strong>Faces</strong>
 								<hr />
-								395,037
+								<div id="faces"></div>
 							</li>
 							<li>
 								<strong>Material Sets</strong>
 								<hr />
-								7
+								<div id="mats"></div>
 							</li>
 							
 						</ul>
 					</div>
 				</div>
-				<div class="additionalOptionsContainer">
+				<div id="additionalOptionsContainer">
 					<img class="clickable" onclick="clickManager(0)" src="3DProjects/Redbot/images/thumbnails/redBot0.png" alt=""/>
 					<img class="clickable" onclick="clickManager(1)" src="3DProjects/Redbot/images/thumbnails/redBot1.png" alt=""/>
 					<img class="clickable" onclick="clickManager(2)" src="3DProjects/Redbot/images/thumbnails/redBot2.png" alt=""/>
@@ -162,42 +169,30 @@
 			</article>
 			<script src="js/custem.js" async defer></script>
 		</div>
-		<a  href="#home" id="gotoTopBtn"><div class="upArrow"></div></a>
-		<!--
-		<div id="webDev">	
-			<div class="label">Website Development</div>
-			<div class="showcasewrapper">
-				<a href="">
-					<img src="images/Renders/19RedBot4.jpg" alt="'RedBot"/>
-				</a>
-			</div>
-		</div>
-	-->
 	
 		<div id="modeling">	
 			<div class="label">3D Models</div>
 			<hr />
 			<div class="showcasewrapper">
-				<a href="#webGLViewer" onclick="showWebGL(0)">
+				<a href="#webGLViewer" onclick="modelProjectManager('Chair')">
 					<img src="3DProjects/Chair/chair.jpg" alt="'Chair"/>
 				</a>
-				<a href="#webGLViewer" onclick="showWebGL(0)">
+				<a href="#webGLViewer" onclick="modelProjectManager('Redbot')">
 					<img src="3DProjects/Redbot/redBot.jpg" alt="'Red Robot"/>
 				</a>
-				<a href="#webGLViewer" onclick="showWebGL(0)">
-					<!--<img src="images/Renders/18CastIronStove3.png" alt="'RedBot"/>-->
+				<a href="#webGLViewer" onclick="modelProjectManager('Stove')">
 					<img src="3DProjects/Stove/Stove.jpg" alt="'Stove"/>
 				</a>
-				<a href="#webGLViewer" onclick="showWebGL(0)">
+				<a href="#webGLViewer" onclick="modelProjectManager('CatBed')">
 					<img src="3DProjects/CatBed/catBed.jpg" alt="'CatBed"/>
 				</a>
-				<a href="#webGLViewer" onclick="showWebGL(0)">
+				<a href="#webGLViewer" onclick="modelProjectManager('Stairs')">
 					<img src="3DProjects/Staircase/stairs.jpg" alt="'Stairs"/>
 				</a>
-				<a href="#webGLViewer" onclick="showWebGL(0)">
+				<a href="#webGLViewer" onclick="modelProjectManager('YellowBot')">
 					<img src="3DProjects/YellowBot/yellowBot0.jpg" alt="'Yellow Robot"/>
 				</a>
-				<a href="#webGLViewer" onclick="showWebGL(0)">
+				<a href="#webGLViewer" onclick="modelProjectManager('Foods')">
 					<img src="3DProjects/Foods/foods.jpg" alt="'Apple"/>
 				</a>
 			</div>
@@ -213,7 +208,7 @@
 		<div id="ContactForm">
 			<div class="label">Contact</div>
 			<hr />
-			<form onsubmit="" name="contact" action="" method="post">
+			<form onsubmit="" name="contact" action="post" method="post">
 				<input name="name" class="" value="" placeholder="Name" type="text" required=""/>
 				<input name="email" value="" placeholder="Email Address" type="text" required=""/>
 				<input name="phone" placeholder="Phone Number (Optional)" type="text" required=""/>
@@ -237,6 +232,5 @@
 			</a>
 		</span>
 	</footer>
-	<script src="js/main.js"></script>
 </body>
 </html>
